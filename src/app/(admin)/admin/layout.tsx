@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
       <header className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-4">
         <h1 className="text-base font-semibold">Admin Panel</h1>
         <p className="text-sm text-[var(--text-muted)]">
-          Protected area scaffold. CRUD modules intentionally deferred.
+          Protected area scaffold. News management MVP is enabled; remaining modules stay deferred.
         </p>
       </header>
       {children}

@@ -6,3 +6,11 @@ export const articleCreateSchema = z.object({
   excerpt: z.string().min(10),
   content: z.string().min(20),
 });
+
+export {
+  adminArticleIdParamsSchema,
+  adminArticleInputSchema,
+  parseAdminArticleInput,
+} from "./admin-article.validation";
+export type { AdminArticleInput } from "./admin-article.validation";
+export { mapRequestBodyToAdminArticleInput } from "./admin-article.dto";
