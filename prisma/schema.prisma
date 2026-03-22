@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum TournamentStatus {
+  UPCOMING
+  LIVE
+  COMPLETED
+}
+
+enum SessionType {
+  PRACTICE
+  QUALIFYING
+  SPRINT
+  RACE
+  OTHER
+}
+
+enum CompetitorType {
+  DRIVER
+  TEAM
+}
+
+enum Platform {
+  IRACING
+  ACC
+  RFACTOR2
+  LE_MANS_ULTIMATE
+  AUTOMOBILISTA2
+  F1_24
+}
+
+model User {
+  id                    String         @id @default(cuid())
+  email                 String         @unique
+  name                  String
+  role                  Role           @default(VIEWER)
+  authoredArticles      NewsArticle[]  @relation("ArticleAuthor")
+  follows               Follow[]
+  curatedDriverOfWeeks  DriverOfWeek[] @relation("DriverOfWeekCurator")
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}
+
+model NewsArticle {
+  id                  String       @id @default(cuid())
+  slug                String       @unique
+  title               String
+  excerpt             String
+  content             String
+  coverImage          String?
+  status              PublishStatus @default(DRAFT)
+  publishedAt         DateTime?
+  authorId            String?
+  author              User?        @relation("ArticleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  tags                Tag[]
+  relatedDrivers      Driver[]     @relation("RelatedArticleDrivers")
+  relatedTeams        Team[]       @relation("RelatedArticleTeams")
+  relatedTournaments  Tournament[] @relation("RelatedArticleTournaments")
+  featuredOnHomepage  Boolean      @default(false)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+model Tag {
+  id        String        @id @default(cuid())
+  slug      String        @unique
+  name      String        @unique
+  articles  NewsArticle[]
+  createdAt DateTime      @default(now())
+}
+
+model Driver {
+  id                   String                    @id @default(cuid())
+  slug                 String                    @unique
+  nickname             String                    @unique
+  realName             String?
+  country              String
+  avatar               String?
+  bio                  String
+  teamId               String?
+  team                 Team?                     @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  platforms            Platform[]
+  achievements         DriverAchievement[]
+  timelineEntries      DriverCareerTimelineEntry[]
+  relatedArticles      NewsArticle[]             @relation("RelatedArticleDrivers")
+  follows              Follow[]
+  rankingEntries       WeeklyTopDriverEntry[]
+  driverOfWeekEntries  DriverOfWeek[]
+  tournamentEntries    Tournament[]              @relation("TournamentDrivers")
+  raceStandings        RaceStanding[]
+  createdAt            DateTime                  @default(now())
+  updatedAt            DateTime                  @updatedAt
+}
+
+model DriverAchievement {
+  id          String   @id @default(cuid())
+  driverId    String
+  driver      Driver   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  year        Int?
+  createdAt   DateTime @default(now())
+
+  @@index([driverId, year])
+}
+
+model DriverCareerTimelineEntry {
+  id          String   @id @default(cuid())
+  driverId    String
+  driver      Driver   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  periodStart DateTime
+  periodEnd   DateTime?
+  label       String
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@index([driverId, periodStart])
+}
+
+model Team {
+  id                   String        @id @default(cuid())
+  slug                 String        @unique
+  name                 String        @unique
+  logo                 String?
+  country              String
+  description          String
+  roster               Driver[]
+  tournaments          Tournament[]  @relation("TournamentTeams")
+  relatedArticles      NewsArticle[] @relation("RelatedArticleTeams")
+  follows              Follow[]
+  raceStandings        RaceStanding[]
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+}
+
+model Tournament {
+  id                    String                @id @default(cuid())
+  slug                  String                @unique
+  name                  String
+  game                  String
+  organizer             String
+  prizePool             Int?
+  startDate             DateTime
+  endDate               DateTime
+  status                TournamentStatus
+  participantsTeams     Team[]                @relation("TournamentTeams")
+  participantsDrivers   Driver[]              @relation("TournamentDrivers")
+  raceResults           RaceResult[]
+  relatedArticles       NewsArticle[]         @relation("RelatedArticleTournaments")
+  featuredSlots         FeaturedTournamentSlot[]
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@index([status, startDate, endDate])
+}
+
+model RaceResult {
+  id           String      @id @default(cuid())
+  tournamentId String
+  tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  eventName    String
+  sessionType  SessionType
+  date         DateTime
+  notes        String?
+  standings    RaceStanding[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([tournamentId, eventName, sessionType, date])
+  @@index([tournamentId, date])
+}
+
+model RaceStanding {
+  id             String         @id @default(cuid())
+  raceResultId   String
+  raceResult     RaceResult     @relation(fields: [raceResultId], references: [id], onDelete: Cascade)
+  position       Int
+  competitorType CompetitorType
+  driverId       String?
+  driver         Driver?        @relation(fields: [driverId], references: [id], onDelete: SetNull)
+  teamId         String?
+  team           Team?          @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  points         Float?
+  laps           Int?
+  totalTime      String?
+  bestLap        String?
+
+  @@index([raceResultId, position])
+  @@unique([raceResultId, position, competitorType])
+}
+
+model Follow {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  driverId  String?
+  driver    Driver?   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  teamId    String?
+  team      Team?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+
+  @@index([userId, createdAt])
+  @@unique([userId, driverId])
+  @@unique([userId, teamId])
+}
+
+model WeeklyTopDriverList {
+  id        String               @id @default(cuid())
+  weekStart DateTime             @unique
+  entries   WeeklyTopDriverEntry[]
+  createdAt DateTime             @default(now())
+}
+
+model WeeklyTopDriverEntry {
+  id           String             @id @default(cuid())
+  listId       String
+  list         WeeklyTopDriverList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  driverId     String
+  driver       Driver             @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  rank         Int
+  reason       String?
+
+  @@unique([listId, rank])
+  @@unique([listId, driverId])
+}
+
+model DriverOfWeek {
+  id          String   @id @default(cuid())
+  weekStart   DateTime @unique
+  driverId    String
+  driver      Driver   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  reason      String
+  curatedById String?
+  curatedBy   User?    @relation("DriverOfWeekCurator", fields: [curatedById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+}
+
+model FeaturedTournamentSlot {
+  id           String      @id @default(cuid())
+  slotDate     DateTime
+  tournamentId String
+  tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  order        Int         @default(1)
+
+  @@unique([slotDate, order])
+  @@index([slotDate, tournamentId])
+}
