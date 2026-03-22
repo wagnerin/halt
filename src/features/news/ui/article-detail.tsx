@@ -22,20 +22,20 @@ function formatPublishedDate(value: Date | null): string {
 
 export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
   return (
-    <div className="space-y-6">
-      <article className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5">
-        <header className="mb-4 space-y-2">
-          <p className="text-xs text-[var(--text-muted)]">
+    <div className="space-y-4">
+      <article className="rounded border border-[var(--border)] bg-[var(--surface)] p-4">
+        <header className="mb-3 space-y-1">
+          <p className="text-[11px] text-[var(--text-muted)]">
             {formatPublishedDate(article.publishedAt)}
             {article.authorName ? ` • ${article.authorName}` : ""}
           </p>
-          <h1 className="text-2xl font-semibold">{article.title}</h1>
-          <p className="text-sm text-[var(--text-muted)]">{article.excerpt}</p>
+          <h1 className="text-xl font-semibold leading-tight">{article.title}</h1>
+          <p className="text-xs text-[var(--text-muted)]">{article.excerpt}</p>
           <div className="flex flex-wrap gap-2">
             {article.tags.map((tag) => (
               <span
                 key={tag.slug}
-                className="rounded border border-[var(--border)] px-2 py-1 text-xs text-[var(--text-muted)]"
+                className="rounded border border-[var(--border)] px-2 py-0.5 text-[11px] text-[var(--text-muted)]"
               >
                 #{tag.name}
               </span>
@@ -44,30 +44,32 @@ export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
         </header>
 
         {article.coverImage ? (
-          <div className="mb-4 overflow-hidden rounded border border-[var(--border)]">
+          <div className="mb-3 overflow-hidden rounded border border-[var(--border)]">
             <img
               src={article.coverImage}
               alt={article.title}
-              className="h-64 w-full object-cover"
+              className="h-56 w-full object-cover"
             />
           </div>
         ) : null}
 
-        <div className="prose prose-invert max-w-none text-sm">
+        <div className="prose prose-invert max-w-none text-sm leading-relaxed">
           {article.content.split("\n\n").map((paragraph, index) => (
             <p key={`${article.id}-paragraph-${index}`}>{paragraph}</p>
           ))}
         </div>
       </article>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Related coverage</h2>
+      <section className="space-y-2 rounded border border-[var(--border)] bg-[var(--surface)] p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+          Related coverage
+        </h2>
         {relatedNews.length === 0 ? (
-          <p className="text-sm text-[var(--text-muted)]">
+          <p className="text-xs text-[var(--text-muted)]">
             No related published articles yet.
           </p>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
             {relatedNews.map((newsItem) => (
               <ArticleCard
                 key={newsItem.id}
@@ -82,7 +84,7 @@ export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
         )}
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-3 md:grid-cols-3">
         <RelatedContentPlaceholder
           title="Related drivers"
           itemCount={article.relatedDrivers.length}
@@ -100,7 +102,7 @@ export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
         />
       </section>
 
-      <Link className="inline-block text-sm text-[var(--accent)]" href="/news">
+      <Link className="inline-block text-xs text-[var(--accent)]" href="/news">
         ← Back to all news
       </Link>
     </div>

@@ -2,10 +2,12 @@ import {
   findPublishedArticleBySlug,
   listPublishedNews,
   listRelatedPublishedNews,
-  type NewsArticleRecord,
-  type NewsListRecord,
-  type RelatedNewsRecord,
-} from "../data";
+} from "../data/news.public.repository";
+import type {
+  NewsArticleRecord,
+  NewsListRecord,
+  RelatedNewsRecord,
+} from "../data/news.public.types";
 
 export type NewsListItem = NewsListRecord;
 
