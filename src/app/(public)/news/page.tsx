@@ -14,20 +14,20 @@ export default async function NewsListPage() {
   const articles = await getNewsList();
 
   return (
-    <section className="space-y-4">
-      <header className="rounded border border-[var(--border)] bg-[var(--surface)] p-4">
-        <h1 className="text-lg font-semibold uppercase tracking-wide">Latest News</h1>
-        <p className="mt-1 text-xs text-[var(--text-muted)]">
+    <section className="space-y-3">
+      <header className="rounded border border-[#334255] bg-gradient-to-b from-[var(--surface)] to-[#11161d] p-3 shadow-[0_8px_22px_rgba(0,0,0,0.22)]">
+        <h1 className="text-xl font-extrabold uppercase tracking-[0.08em]">Latest News</h1>
+        <p className="mt-1 text-[11px] text-[var(--text-muted)]">
           Dense editorial feed for daily sim racing coverage, analysis, and roster movement.
         </p>
       </header>
 
       {articles.length === 0 ? (
-        <div className="rounded border border-[var(--border)] bg-[var(--surface)] p-4 text-xs text-[var(--text-muted)]">
+        <div className="rounded border border-[var(--border)] bg-[var(--surface)] p-3 text-[11px] text-[var(--text-muted)]">
           No mock articles available.
         </div>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
           {articles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}

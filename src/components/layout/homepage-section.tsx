@@ -14,14 +14,14 @@ export function HomepageSection({
   children,
 }: HomepageSectionProps) {
   return (
-    <section className="space-y-2 rounded border border-[var(--border)] bg-[var(--surface)] p-2.5">
-      <header className="flex items-center justify-between gap-2 border-b border-[var(--border)] pb-1.5">
+    <section className="space-y-2 rounded border border-[#2f3c4d] bg-gradient-to-b from-[var(--surface)] to-[#11161d] p-2.5 shadow-[0_8px_22px_rgba(0,0,0,0.22)]">
+      <header className="flex items-center justify-between gap-2 border-b border-[#2f3c4d] pb-1.5">
         <div>
-          <h2 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--text-muted)]">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#b8c6d8]">
             {title}
           </h2>
           {subtitle ? (
-            <p className="mt-0.5 text-[10px] text-[var(--text-muted)]/90">{subtitle}</p>
+            <p className="mt-0.5 text-[10px] text-[var(--text-muted)]/85">{subtitle}</p>
           ) : null}
         </div>
         {action ? <div className="text-[10px]">{action}</div> : null}

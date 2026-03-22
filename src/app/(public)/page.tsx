@@ -31,54 +31,28 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-3">
-      <HomepageSection
-        title="Headline Story"
-        subtitle="Primary editorial slot"
-        action={
-          <Link className="font-medium text-[var(--accent)] hover:underline" href="/news">
-            View all news →
-          </Link>
-        }
-      >
-        {headline ? (
-          <HeadlineStoryCard
-            slug={headline.slug}
-            title={headline.title}
-            excerpt={headline.excerpt}
-            coverImage={headline.coverImage}
-            publishedLabel={formatPublishedDate(headline.publishedAt)}
-            authorName={headline.authorName}
-            tags={headline.tags}
-          />
-        ) : (
-          <p className="text-xs text-[var(--text-muted)]">No headline article available.</p>
-        )}
-      </HomepageSection>
-
       <div className="grid gap-3 xl:grid-cols-[2.15fr_1fr]">
         <HomepageSection
-          title="Latest News Feed"
-          subtitle="Fast scan editorial timeline"
+          title="Headline Story"
+          subtitle="Primary editorial slot"
           action={
             <Link className="font-medium text-[var(--accent)] hover:underline" href="/news">
-              Open feed →
+              View all news →
             </Link>
           }
         >
-          {latestFeed.length === 0 ? (
-            <p className="text-xs text-[var(--text-muted)]">No additional stories available.</p>
+          {headline ? (
+            <HeadlineStoryCard
+              slug={headline.slug}
+              title={headline.title}
+              excerpt={headline.excerpt}
+              coverImage={headline.coverImage}
+              publishedLabel={formatPublishedDate(headline.publishedAt)}
+              authorName={headline.authorName}
+              tags={headline.tags}
+            />
           ) : (
-            <div className="grid gap-1.5 md:grid-cols-2">
-              {latestFeed.map((article) => (
-                <NewsFeedItemCard
-                  key={article.id}
-                  slug={article.slug}
-                  title={article.title}
-                  excerpt={article.excerpt}
-                  publishedLabel={formatPublishedDate(article.publishedAt)}
-                />
-              ))}
-            </div>
+            <p className="text-xs text-[var(--text-muted)]">No headline article available.</p>
           )}
         </HomepageSection>
 
@@ -107,6 +81,34 @@ export default async function HomePage() {
             />
           </HomepageSection>
         </div>
+      </div>
+
+      <div>
+        <HomepageSection
+          title="Latest News Feed"
+          subtitle="Fast scan editorial timeline"
+          action={
+            <Link className="font-medium text-[var(--accent)] hover:underline" href="/news">
+              Open feed →
+            </Link>
+          }
+        >
+          {latestFeed.length === 0 ? (
+            <p className="text-xs text-[var(--text-muted)]">No additional stories available.</p>
+          ) : (
+            <div className="grid gap-1.5 md:grid-cols-2 xl:grid-cols-3">
+              {latestFeed.map((article) => (
+                <NewsFeedItemCard
+                  key={article.id}
+                  slug={article.slug}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  publishedLabel={formatPublishedDate(article.publishedAt)}
+                />
+              ))}
+            </div>
+          )}
+        </HomepageSection>
       </div>
     </div>
   );

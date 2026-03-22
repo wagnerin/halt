@@ -14,12 +14,12 @@ export function NewsFeedItemCard({
   publishedLabel,
 }: NewsFeedItemCardProps) {
   return (
-    <article className="rounded border border-[var(--border)] bg-[var(--surface-2)] p-2.5 transition-colors hover:border-[#3a4a5d] hover:bg-[#1e2631]">
+    <article className="group rounded border border-[#334255] bg-[var(--surface-2)] p-2.5 transition-all duration-200 hover:-translate-y-[1px] hover:border-[#4b5f78] hover:bg-[#202a36]">
       <p className="text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
         {publishedLabel}
       </p>
-      <h3 className="mt-1 text-[13px] font-semibold leading-snug">
-        <Link className="hover:text-[var(--accent)]" href={`/news/${slug}`}>
+      <h3 className="mt-1 text-[13px] font-semibold leading-snug text-[#eaf2fb]">
+        <Link className="group-hover:text-[var(--accent)]" href={`/news/${slug}`}>
           {title}
         </Link>
       </h3>

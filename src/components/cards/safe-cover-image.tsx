@@ -6,7 +6,6 @@ type SafeCoverImageProps = {
   src: string | null | undefined;
   alt: string;
   className: string;
-  placeholderLabel?: string;
   placeholderClassName?: string;
 };
 
@@ -39,7 +38,6 @@ export function SafeCoverImage({
   src,
   alt,
   className,
-  placeholderLabel = "Image unavailable",
   placeholderClassName,
 }: SafeCoverImageProps) {
   const normalizedSrc = useMemo(() => normalizeImageSrc(src), [src]);
@@ -50,10 +48,11 @@ export function SafeCoverImage({
       <div
         className={
           placeholderClassName ??
-          "flex items-center justify-center bg-gradient-to-br from-[var(--surface-2)] to-[var(--background)] text-xs text-[var(--text-muted)]"
+          "relative overflow-hidden bg-gradient-to-br from-[#1e2530] via-[#151c25] to-[#0d1117]"
         }
       >
-        <span>{placeholderLabel}</span>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(94,163,255,0.12),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.04)_35%,transparent_70%)]" />
       </div>
     );
   }

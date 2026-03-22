@@ -24,50 +24,55 @@ function formatPublishedDate(value: Date | null): string {
 
 export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
   return (
-    <div className="space-y-4">
-      <article className="rounded border border-[var(--border)] bg-[var(--surface)] p-4">
-        <header className="mb-3 space-y-1">
-          <p className="text-[11px] text-[var(--text-muted)]">
-            {formatPublishedDate(article.publishedAt)}
-            {article.authorName ? ` • ${article.authorName}` : ""}
-          </p>
-          <h1 className="text-xl font-semibold leading-tight">{article.title}</h1>
-          <p className="text-xs text-[var(--text-muted)]">{article.excerpt}</p>
-          <div className="flex flex-wrap gap-2">
-            {article.tags.map((tag) => (
-              <span
-                key={tag.slug}
-                className="rounded border border-[var(--border)] px-2 py-0.5 text-[11px] text-[var(--text-muted)]"
-              >
-                #{tag.name}
-              </span>
-            ))}
-          </div>
-        </header>
-
-        <div className="mb-3 overflow-hidden rounded border border-[var(--border)]">
+    <div className="space-y-3">
+      <article className="rounded border border-[#334255] bg-[var(--surface)] shadow-[0_8px_24px_rgba(0,0,0,0.24)]">
+        <div className="relative border-b border-[var(--border)]">
           <SafeCoverImage
             src={article.coverImage}
             alt={article.title}
-            className="h-56 w-full object-cover"
-            placeholderClassName="flex h-56 w-full items-center justify-center bg-gradient-to-br from-[var(--surface-2)] to-[var(--background)] text-xs text-[var(--text-muted)]"
-            placeholderLabel="No cover image"
+            className="h-72 w-full object-cover"
+            placeholderClassName="relative h-72 w-full overflow-hidden bg-gradient-to-br from-[#1f2a38] via-[#151d28] to-[#0d1117]"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07090d]/95 via-[#07090d]/45 to-transparent" />
+          <header className="absolute inset-x-0 bottom-0 space-y-2 p-4">
+            <p className="text-[10px] uppercase tracking-[0.08em] text-[#b7c7d9]">
+              {formatPublishedDate(article.publishedAt)}
+              {article.authorName ? ` • ${article.authorName}` : ""}
+            </p>
+            <h1 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-white">
+              {article.title}
+            </h1>
+            <p className="max-w-3xl text-[13px] leading-relaxed text-[#d3deea]">
+              {article.excerpt}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {article.tags.map((tag) => (
+                <span
+                  key={tag.slug}
+                  className="rounded-full border border-[#4a5d75] bg-[#1c2633] px-2 py-0.5 text-[10px] text-[#bdd0e3]"
+                >
+                  #{tag.name}
+                </span>
+              ))}
+            </div>
+          </header>
         </div>
 
-        <div className="prose prose-invert max-w-none text-sm leading-relaxed">
-          {article.content.split("\n\n").map((paragraph, index) => (
-            <p key={`${article.id}-paragraph-${index}`}>{paragraph}</p>
-          ))}
+        <div className="border-t border-[var(--border)] px-4 py-5">
+          <div className="prose prose-invert mx-auto max-w-3xl text-[15px] leading-7">
+            {article.content.split("\n\n").map((paragraph, index) => (
+              <p key={`${article.id}-paragraph-${index}`}>{paragraph}</p>
+            ))}
+          </div>
         </div>
       </article>
 
-      <section className="space-y-2 rounded border border-[var(--border)] bg-[var(--surface)] p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+      <section className="space-y-2 rounded border border-[#324155] bg-[var(--surface)] p-3">
+        <h2 className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#b8c8da]">
           Related coverage
         </h2>
         {relatedNews.length === 0 ? (
-          <p className="text-xs text-[var(--text-muted)]">
+          <p className="text-[11px] text-[var(--text-muted)]">
             No related published articles yet.
           </p>
         ) : (
@@ -104,7 +109,7 @@ export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
         />
       </section>
 
-      <Link className="inline-block text-xs text-[var(--accent)]" href="/news">
+      <Link className="inline-block text-[11px] font-medium text-[var(--accent)]" href="/news">
         ← Back to all news
       </Link>
     </div>
