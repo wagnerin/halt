@@ -10,15 +10,15 @@ export function HomepagePlaceholderBlock({
   items = [],
 }: HomepagePlaceholderBlockProps) {
   return (
-    <section className="space-y-2 rounded border border-[var(--border)] bg-[var(--surface-2)] p-3">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+    <section className="space-y-2 rounded border border-[var(--border)] bg-[var(--surface-2)] p-2.5">
+      <h3 className="text-[11px] font-semibold uppercase tracking-wide text-[var(--text-muted)]">
         {title}
       </h3>
-      <p className="text-xs text-[var(--text-muted)]">{description}</p>
+      <p className="text-[11px] leading-relaxed text-[var(--text-muted)]">{description}</p>
       {items.length > 0 ? (
-        <ul className="space-y-1 border-t border-[var(--border)] pt-2">
+        <ul className="space-y-1 border-t border-[var(--border)] pt-1.5">
           {items.map((item) => (
-            <li key={item} className="text-xs">
+            <li key={item} className="text-[11px]">
               {item}
             </li>
           ))}

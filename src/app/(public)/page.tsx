@@ -30,12 +30,12 @@ export default async function HomePage() {
   const { headline, latestFeed } = await getHomepageNewsData();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <HomepageSection
         title="Headline Story"
         subtitle="Primary editorial slot"
         action={
-          <Link className="text-[var(--accent)] hover:underline" href="/news">
+          <Link className="font-medium text-[var(--accent)] hover:underline" href="/news">
             View all news →
           </Link>
         }
@@ -55,12 +55,12 @@ export default async function HomePage() {
         )}
       </HomepageSection>
 
-      <div className="grid gap-4 xl:grid-cols-[1.7fr_1fr]">
+      <div className="grid gap-3 xl:grid-cols-[2.15fr_1fr]">
         <HomepageSection
           title="Latest News Feed"
           subtitle="Fast scan editorial timeline"
           action={
-            <Link className="text-[var(--accent)] hover:underline" href="/news">
+            <Link className="font-medium text-[var(--accent)] hover:underline" href="/news">
               Open feed →
             </Link>
           }
@@ -68,7 +68,7 @@ export default async function HomePage() {
           {latestFeed.length === 0 ? (
             <p className="text-xs text-[var(--text-muted)]">No additional stories available.</p>
           ) : (
-            <div className="grid gap-2 md:grid-cols-2">
+            <div className="grid gap-1.5 md:grid-cols-2">
               {latestFeed.map((article) => (
                 <NewsFeedItemCard
                   key={article.id}
@@ -82,7 +82,7 @@ export default async function HomePage() {
           )}
         </HomepageSection>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           <HomepageSection title="Featured Tournament" subtitle="Pinned event slot">
             <HomepagePlaceholderBlock
               title="Tournament module integration pending"
