@@ -1,4 +1,4 @@
-import type { ResultSessionDetailDto } from "../api";
+import type { ResultSessionDetailDto } from "../domain";
 
 type SummaryStatsBlockProps = {
   summary: ResultSessionDetailDto["summary"];

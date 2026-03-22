@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { ResultSessionDetailDto } from "../api";
+import type { ResultSessionDetailDto } from "../domain";
 
 type EventSessionMetadataProps = {
   session: ResultSessionDetailDto;

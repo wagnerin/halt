@@ -1,5 +1,7 @@
-import { mapRaceResultToDto, parseResultSessionParams, type ResultSessionDetailDto } from "../api";
 import { findRaceResultSession } from "../data";
+import { mapRaceResultToDto } from "./result-session.mapper";
+import type { ResultSessionDetailDto } from "./result-session.types";
+import { parseResultSessionParams } from "./result-session.validation";
 
 export async function getRaceResultSessionDetail(
   input: unknown

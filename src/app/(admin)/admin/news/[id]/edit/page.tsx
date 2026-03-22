@@ -2,12 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { requireMinimumRole } from "@/lib/auth";
-import { adminArticleIdParamsSchema } from "@/features/news/api";
 import {
   getAdminNewsArticleForEdit,
   getAdminNewsFormOptions,
 } from "@/features/news/domain";
 import { AdminNewsForm } from "@/features/news/ui";
+import { cuidSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -18,13 +18,13 @@ type AdminNewsEditPageProps = {
 export default async function AdminNewsEditPage({ params }: AdminNewsEditPageProps) {
   await requireMinimumRole("EDITOR");
   const { id } = await params;
-  const parsedId = adminArticleIdParamsSchema.safeParse({ id });
+  const parsedId = cuidSchema.safeParse(id);
   if (!parsedId.success) {
     notFound();
   }
 
   const [article, options] = await Promise.all([
-    getAdminNewsArticleForEdit(parsedId.data.id),
+    getAdminNewsArticleForEdit(parsedId.data),
     getAdminNewsFormOptions(),
   ]);
   if (!article) {

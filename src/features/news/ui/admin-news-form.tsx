@@ -3,7 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 
+import { RelationSelector } from "@/components/forms";
+
 import type { AdminNewsEditArticle, AdminNewsFormOptions } from "../domain";
+import {
+  buildInitialAdminNewsFormState,
+  toggleSelectedId,
+  type AdminNewsFormStatus,
+} from "./admin-news-form.state";
 
 type AdminNewsFormProps = {
   mode: "create" | "edit";
@@ -11,96 +18,11 @@ type AdminNewsFormProps = {
   initialArticle?: AdminNewsEditArticle;
 };
 
-type StatusValue = "DRAFT" | "PUBLISHED";
-
-type FormState = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  coverImage: string;
-  status: StatusValue;
-  tagIds: string[];
-  relatedDriverIds: string[];
-  relatedTeamIds: string[];
-  relatedTournamentIds: string[];
-};
-
-function buildInitialState(initialArticle?: AdminNewsEditArticle): FormState {
-  if (!initialArticle) {
-    return {
-      slug: "",
-      title: "",
-      excerpt: "",
-      content: "",
-      coverImage: "",
-      status: "DRAFT",
-      tagIds: [],
-      relatedDriverIds: [],
-      relatedTeamIds: [],
-      relatedTournamentIds: [],
-    };
-  }
-
-  return {
-    slug: initialArticle.slug,
-    title: initialArticle.title,
-    excerpt: initialArticle.excerpt,
-    content: initialArticle.content,
-    coverImage: initialArticle.coverImage ?? "",
-    status: initialArticle.status,
-    tagIds: initialArticle.tagIds,
-    relatedDriverIds: initialArticle.relatedDriverIds,
-    relatedTeamIds: initialArticle.relatedTeamIds,
-    relatedTournamentIds: initialArticle.relatedTournamentIds,
-  };
-}
-
-function toggleSelection(values: string[], id: string): string[] {
-  if (values.includes(id)) {
-    return values.filter((value) => value !== id);
-  }
-
-  return [...values, id];
-}
-
-function RelationSelector(props: {
-  title: string;
-  items: Array<{ id: string; label: string; helper?: string }>;
-  selectedIds: string[];
-  onToggle: (id: string) => void;
-}) {
-  return (
-    <section className="space-y-2 rounded border border-[var(--border)] bg-[var(--surface-2)] p-3">
-      <h3 className="text-sm font-medium">{props.title}</h3>
-      {props.items.length === 0 ? (
-        <p className="text-xs text-[var(--text-muted)]">No options available.</p>
-      ) : (
-        <div className="max-h-48 space-y-2 overflow-y-auto pr-1">
-          {props.items.map((item) => (
-            <label key={item.id} className="flex cursor-pointer gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={props.selectedIds.includes(item.id)}
-                onChange={() => props.onToggle(item.id)}
-              />
-              <span>
-                {item.label}
-                {item.helper ? (
-                  <span className="ml-1 text-xs text-[var(--text-muted)]">{item.helper}</span>
-                ) : null}
-              </span>
-            </label>
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
 export function AdminNewsForm({ mode, options, initialArticle }: AdminNewsFormProps) {
   const router = useRouter();
-  const [form, setForm] = useState<FormState>(() => buildInitialState(initialArticle));
+  const [form, setForm] = useState(() =>
+    buildInitialAdminNewsFormState(initialArticle)
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -217,7 +139,10 @@ export function AdminNewsForm({ mode, options, initialArticle }: AdminNewsFormPr
             className="w-full rounded border border-[var(--border)] bg-[var(--background)] px-3 py-2"
             value={form.status}
             onChange={(event) =>
-              setForm((state) => ({ ...state, status: event.target.value as StatusValue }))
+              setForm((state) => ({
+                ...state,
+                status: event.target.value as AdminNewsFormStatus,
+              }))
             }
           >
             <option value="DRAFT">Draft</option>
@@ -236,7 +161,7 @@ export function AdminNewsForm({ mode, options, initialArticle }: AdminNewsFormPr
           }))}
           selectedIds={form.tagIds}
           onToggle={(id) =>
-            setForm((state) => ({ ...state, tagIds: toggleSelection(state.tagIds, id) }))
+            setForm((state) => ({ ...state, tagIds: toggleSelectedId(state.tagIds, id) }))
           }
         />
         <RelationSelector
@@ -250,7 +175,7 @@ export function AdminNewsForm({ mode, options, initialArticle }: AdminNewsFormPr
           onToggle={(id) =>
             setForm((state) => ({
               ...state,
-              relatedDriverIds: toggleSelection(state.relatedDriverIds, id),
+              relatedDriverIds: toggleSelectedId(state.relatedDriverIds, id),
             }))
           }
         />
@@ -265,7 +190,7 @@ export function AdminNewsForm({ mode, options, initialArticle }: AdminNewsFormPr
           onToggle={(id) =>
             setForm((state) => ({
               ...state,
-              relatedTeamIds: toggleSelection(state.relatedTeamIds, id),
+              relatedTeamIds: toggleSelectedId(state.relatedTeamIds, id),
             }))
           }
         />
@@ -280,7 +205,7 @@ export function AdminNewsForm({ mode, options, initialArticle }: AdminNewsFormPr
           onToggle={(id) =>
             setForm((state) => ({
               ...state,
-              relatedTournamentIds: toggleSelection(state.relatedTournamentIds, id),
+              relatedTournamentIds: toggleSelectedId(state.relatedTournamentIds, id),
             }))
           }
         />

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { ResultSessionDetailDto } from "../api";
+import type { ResultSessionDetailDto } from "../domain";
 import { EventSessionMetadata } from "./event-session-metadata";
 import { StandingsTable } from "./standings-table";
 import { SummaryStatsBlock } from "./summary-stats-block";

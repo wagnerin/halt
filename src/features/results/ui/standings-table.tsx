@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { DataTable, type DataTableColumn } from "@/components/tables";
 
-import type { ResultSessionStandingDto } from "../api";
+import type { ResultSessionStandingDto } from "../domain";
 
 type StandingsTableProps = {
   standings: ResultSessionStandingDto[];

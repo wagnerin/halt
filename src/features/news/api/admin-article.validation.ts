@@ -12,7 +12,7 @@ export const adminArticleInputSchema = z
     title: z.string().min(5).max(180),
     excerpt: z.string().min(10).max(400),
     content: z.string().min(20),
-    coverImage: z.string().trim().url().nullable().optional(),
+    coverImage: z.string().trim().url().nullable().optional().transform((value) => value ?? null),
     status: publishStatusSchema,
     tagIds: relatedIdsSchema,
     relatedDriverIds: relatedIdsSchema,

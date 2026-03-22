@@ -1,2 +1,1 @@
-// Shared form components placeholder.
-export {};
+export { RelationSelector } from "./relation-selector";

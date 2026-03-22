@@ -1,6 +1,3 @@
-import { PublishStatus } from "@prisma/client";
-
-import type { AdminArticleInput } from "../api";
 import {
   createAdminNewsArticle,
   findAdminNewsArticleById,
@@ -15,6 +12,18 @@ import {
 export type AdminNewsListItem = AdminNewsListRecord;
 export type AdminNewsEditArticle = AdminNewsEditRecord;
 export type AdminNewsFormOptions = AdminNewsEditorOptions;
+export type AdminNewsUpsertInput = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  coverImage: string | null;
+  status: "DRAFT" | "PUBLISHED";
+  tagIds: string[];
+  relatedDriverIds: string[];
+  relatedTeamIds: string[];
+  relatedTournamentIds: string[];
+};
 
 export async function getAdminNewsList(): Promise<AdminNewsListItem[]> {
   return listAdminNewsArticles();
@@ -31,7 +40,7 @@ export async function getAdminNewsArticleForEdit(
 }
 
 type SaveAdminNewsInput = {
-  input: AdminArticleInput;
+  input: AdminNewsUpsertInput;
   authorId: string | null;
 };
 
@@ -43,7 +52,6 @@ export async function createAdminNews({
     {
       ...input,
       coverImage: input.coverImage ?? null,
-      status: input.status ?? PublishStatus.DRAFT,
     },
     authorId
   );
@@ -51,11 +59,10 @@ export async function createAdminNews({
 
 export async function updateAdminNews(
   id: string,
-  input: AdminArticleInput
+  input: AdminNewsUpsertInput
 ): Promise<{ id: string } | null> {
   return updateAdminNewsArticle(id, {
     ...input,
     coverImage: input.coverImage ?? null,
-    status: input.status ?? PublishStatus.DRAFT,
   });
 }
