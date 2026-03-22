@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SafeCoverImage } from "@/components/cards";
+
 import type { NewsDetail, RelatedNewsItem } from "../domain";
 import { ArticleCard } from "./article-card";
 import { RelatedContentPlaceholder } from "./related-content-placeholder";
@@ -43,15 +45,15 @@ export function ArticleDetail({ article, relatedNews }: ArticleDetailProps) {
           </div>
         </header>
 
-        {article.coverImage ? (
-          <div className="mb-3 overflow-hidden rounded border border-[var(--border)]">
-            <img
-              src={article.coverImage}
-              alt={article.title}
-              className="h-56 w-full object-cover"
-            />
-          </div>
-        ) : null}
+        <div className="mb-3 overflow-hidden rounded border border-[var(--border)]">
+          <SafeCoverImage
+            src={article.coverImage}
+            alt={article.title}
+            className="h-56 w-full object-cover"
+            placeholderClassName="flex h-56 w-full items-center justify-center bg-gradient-to-br from-[var(--surface-2)] to-[var(--background)] text-xs text-[var(--text-muted)]"
+            placeholderLabel="No cover image"
+          />
+        </div>
 
         <div className="prose prose-invert max-w-none text-sm leading-relaxed">
           {article.content.split("\n\n").map((paragraph, index) => (

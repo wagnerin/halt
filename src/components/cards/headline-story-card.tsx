@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SafeCoverImage } from "./safe-cover-image";
+
 type HeadlineStoryCardProps = {
   slug: string;
   title: string;
@@ -21,11 +23,15 @@ export function HeadlineStoryCard({
 }: HeadlineStoryCardProps) {
   return (
     <article className="overflow-hidden rounded border border-[var(--border)] bg-[var(--surface-2)]">
-      {coverImage ? (
-        <div className="border-b border-[var(--border)]">
-          <img src={coverImage} alt={title} className="h-56 w-full object-cover" />
-        </div>
-      ) : null}
+      <div className="border-b border-[var(--border)]">
+        <SafeCoverImage
+          src={coverImage}
+          alt={title}
+          className="h-56 w-full object-cover"
+          placeholderClassName="flex h-56 w-full items-center justify-center bg-gradient-to-br from-[var(--surface-2)] to-[var(--background)] text-xs text-[var(--text-muted)]"
+          placeholderLabel="No cover image"
+        />
+      </div>
 
       <div className="space-y-2 p-3">
         <p className="text-[11px] text-[var(--text-muted)]">
