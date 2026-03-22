@@ -1,5 +1,9 @@
-import type { TournamentListItem } from "../domain";
-
-export type TournamentsRepository = {
-  listTournaments: () => Promise<TournamentListItem[]>;
-};
+export { findTournamentBySlug, listTournaments } from "./tournaments.repository";
+export type {
+  TournamentDetailRecord,
+  TournamentListRecord,
+  TournamentParticipantDriverRecord,
+  TournamentParticipantTeamRecord,
+  TournamentResultRecord,
+  TournamentResultStandingRecord,
+} from "./tournaments.repository";

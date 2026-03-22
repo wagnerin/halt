@@ -1,10 +1,9 @@
-export type TournamentListItem = {
-  id: string;
-  slug: string;
-  name: string;
-  status: "UPCOMING" | "LIVE" | "COMPLETED";
-};
-
-export async function listTournaments(): Promise<TournamentListItem[]> {
-  return [];
-}
+export { getTournamentBySlug, getTournamentsList } from "./tournaments.service";
+export type {
+  TournamentDetail,
+  TournamentListItem,
+  TournamentParticipantDriver,
+  TournamentParticipantTeam,
+  TournamentResult,
+  TournamentResultStanding,
+} from "./tournaments.service";
