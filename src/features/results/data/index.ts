@@ -1,5 +1,2 @@
-import type { ResultListItem } from "../domain";
-
-export type ResultsRepository = {
-  listResults: () => Promise<ResultListItem[]>;
-};
+export { findRaceResultSession } from "./results.repository";
+export type { RaceResultDetailRecord, RaceResultStandingRecord } from "./results.repository";
