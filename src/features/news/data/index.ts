@@ -1,5 +1,10 @@
-import type { NewsListItem } from "../domain";
-
-export type NewsRepository = {
-  listNews: () => Promise<NewsListItem[]>;
-};
+export {
+  findPublishedArticleBySlug,
+  listPublishedNews,
+  listRelatedPublishedNews,
+} from "./news.repository";
+export type {
+  NewsArticleRecord,
+  NewsListRecord,
+  RelatedNewsRecord,
+} from "./news.repository";
