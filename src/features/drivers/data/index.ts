@@ -1,5 +1,8 @@
-import type { DriverListItem } from "../domain";
-
-export type DriversRepository = {
-  listDrivers: () => Promise<DriverListItem[]>;
-};
+export { findDriverBySlug, listDrivers } from "./drivers.repository";
+export type {
+  DriverAchievementRecord,
+  DriverListRecord,
+  DriverProfileRecord,
+  DriverRelatedArticleRecord,
+  DriverTimelineEntryRecord,
+} from "./drivers.repository";

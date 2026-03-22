@@ -1,10 +1,8 @@
-export type DriverListItem = {
-  id: string;
-  slug: string;
-  nickname: string;
-  country: string;
-};
-
-export async function listDrivers(): Promise<DriverListItem[]> {
-  return [];
-}
+export { getDriverProfileBySlug, getDriversList } from "./drivers.service";
+export type {
+  DriverAchievement,
+  DriverListItem,
+  DriverProfile,
+  DriverRelatedArticle,
+  DriverTimelineEntry,
+} from "./drivers.service";
