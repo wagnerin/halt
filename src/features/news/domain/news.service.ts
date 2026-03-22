@@ -15,8 +15,23 @@ export type NewsDetail = NewsArticleRecord;
 
 export type RelatedNewsItem = RelatedNewsRecord;
 
+export type HomepageNewsData = {
+  headline: NewsListItem | null;
+  latestFeed: NewsListItem[];
+};
+
 export async function getNewsList(limit?: number): Promise<NewsListItem[]> {
   return listPublishedNews(limit);
+}
+
+export async function getHomepageNewsData(): Promise<HomepageNewsData> {
+  const articles = await listPublishedNews(8);
+  const [headline, ...latestFeed] = articles;
+
+  return {
+    headline: headline ?? null,
+    latestFeed,
+  };
 }
 
 export async function getNewsArticleBySlug(slug: string): Promise<NewsDetail | null> {

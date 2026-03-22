@@ -1,9 +1,15 @@
 export {
+  getHomepageNewsData,
   getNewsArticleBySlug,
   getNewsList,
   getRelatedNewsForArticle,
 } from "./news.service";
-export type { NewsDetail, NewsListItem, RelatedNewsItem } from "./news.service";
+export type {
+  HomepageNewsData,
+  NewsDetail,
+  NewsListItem,
+  RelatedNewsItem,
+} from "./news.service";
 export {
   createAdminNews,
   getAdminNewsArticleForEdit,
